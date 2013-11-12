@@ -1,0 +1,143 @@
+---
+layout: default
+---
+{% include navigation.html %}
+
+{% if page.url == "/prevention" %}
+
+{% include swipe.html %}
+
+<!-- <div class="map-share">
+  <div id="video-content" style='position: absolute; width: 450px; height: 390px; margin: -230px -245px 0px 0px;'>
+    <h3>Watch the following video to learn how to use the LRI mapping tool.</h3>
+    <a href="#" class="close">&times;</a>
+    <iframe id="player"></iframe>
+  </div>
+</div> -->
+
+<div class='layer-switcher'>
+  <ul class='basemaps'>
+    <li class='border-bottom'><h4>Change Base Layer</h4></li>
+    <li ><a id='lri.FuelTypeMap_Update' class='active layer-name'>Fuel Type map</a></li>
+    <li><a id='lri.FireHazard'>Fire Hazard Map</a></li>
+    <li><a id=''>Blank</a></li>
+  </ul>
+  
+  <ul class='swipemaps'>
+    <li class='border-bottom'><h4>Change Swipe Layer</h4></li>
+    <li><a id='lri.FireRisk2007' class='active'>fire risk 2007 map</a></li>
+    <li><a id='lri.BurnedAreas'>Burned areas map</a></li>
+
+    <!--To show the year list, remove the "!--" and the "--" at the end of the <ul> -->
+          <!--li>Burned Area Maps</li>
+            <ul class='inline'>
+             <li><a id='' class='layer-name'>2011</a></li>
+             <li><a id='' class='layer-name'>2010</a></li>
+             <li><a id='' class='layer-name'>2009</a></li>
+             <li><a id='' class='layer-name'>2008</a></li>
+             <li><a id='' class='layer-name'>2007</a></li>
+             <li><a id='' class='layer-name'>2006</a></li>
+             <li><a id='' class='layer-name'>2005</a></li>
+             <li><a id='' class='layer-name'>2004</a></li>
+             <li><a id='' class='layer-name'>2003</a></li>
+             <li><a id='' class='layer-name'>2002</a></li>
+           </ul-->
+         </ul>
+       </div>
+
+       {% endif %}
+
+       {% if page.url == "/progress" %}
+       <div class='navigation-map'>
+        <h3>Click to check our sites<br><span class='site-name'>klayaa</span></h3>
+        <div class='small-map'>
+          <a href='#' class='forest-site' id='klayaa'><span>klayaa</span></a>
+          <a href='#' class='forest-site' id='rachaya'><span>rachaya</span></a>
+          <a href='#' class='forest-site active' id='aanjar'><span>aanjar</span></a>
+          <a href='#' class='forest-site' id='kfarzabad'><span>kfarzabad</span></a>
+          <a href='#' class='forest-site' id='bcharre'><span>bcharre</span></a>
+          <a href='#' class='forest-site' id='maqneh'><span>Maqneh</span></a>
+          <a href='#' class='forest-site' id='tannourine'><span>tannourine</span></a>
+          <a href='#' class='forest-site' id='ainata'><span>ainata</span></a>
+          <a href='#' class='forest-site' id='rmadiyeh'><span>rmadiyeh</span></a>
+          <a href='#' class='forest-site' id='kfardebian'><span>kfardebian</span></a>
+        </div>
+      </div>
+
+      <div class='layer-switcher'>
+        <h4>Change Base Layer</h4>
+        <ul class='basemaps'>
+         <li><a id='lri.map-ahroxios' class='layer-name active'>Reforestation Sites</a></li>
+         <li><a id='lri.nurseriess' class='layer-name'>Nurseries</a></li>
+
+         
+       </ul>
+     </div>
+      <img src="{{site.baseurl}}/img/monitor.png" id='veg_legend'>
+
+     {% endif %}
+
+     {% if page.url == "/proposal" %}
+
+     {% include swipe.html %}
+
+     <div class='layer-switcher'>
+      <h4>Change Base Layer</h4>
+      <ul class='basemaps'>
+       <li><a id='lri.SuitableSites' class='layer-name active'>Proposed Reforestation Sites</a></li>
+     </ul>
+     <h4>Change Swipe layer</h4>
+     <ul class='swipemaps'>
+      <li><a id='lri.RoadsClip' class='layer-name active'>Roads Clips</a></li>
+
+      <li><a id='lri.FireHazard' class='layer-name'>Fire Hazard Map</a></li>
+    </ul>
+  </div>
+
+  {% endif %}
+
+  {% if page.url == "/vegetation" %}
+
+  {% include swipe.html %}
+
+
+  <div class='layer-switcher'>
+    <h4>Change Base Layer</h4>
+    <ul class='basemaps'>
+     <li><a id='lri.FinalVegMap2012' class='layer-name active'>Vegetation Map 2012</a></li>
+     <li><a id='blank' class=''>Blank</a></li>
+   </ul>
+   <h4>Change Swipe layer</h4>
+   <ul class='swipemaps'>
+    <li><a id='lri.VegetationMap88' class='layer-name active'>Vegetation Map 1988</a></li>
+    <li><a id='lri.VegegLeveev' class='layer-name'>Vegetation Levels</a></li>
+  </ul>
+</div>
+
+<img src="{{site.baseurl}}/img/legend.png" id='veg_legend'>
+
+{% endif %}
+
+<script>
+$(function() {
+  
+  window.loadMap({
+    layer: '{{page.firstlayer}}',
+    swipe: '{{page.swipe}}',
+    lat: {{page.lat}},
+    lon: {{page.lon}},
+    zoom: {{page.zoom}},
+  });
+        // replace "click to navigate" with the site names
+        $('a.forest-site').click(function(e){
+          e.preventDefault();
+          $('a.forest-site').removeClass('active');
+          $(this).addClass('active');
+
+          var dotName = $(this).attr('id');
+          $('.site-name').replaceWith('<span class="site-name">'+ dotName + '</span>')
+        });
+        var info = document.getElementById('info');
+        layers = document.getElementById('layers');
+      });
+</script>

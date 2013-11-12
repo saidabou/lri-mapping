@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>LRI</title>
+  <link href='http://api.tiles.mapbox.com/mapbox.js/v1.1.0/mapbox.css' rel='stylesheet' />
+  <!--[if lte IE 8]>
+    <link href='http://api.tiles.mapbox.com/mapbox.js/v1.1.0/mapbox.ie.css' rel='stylesheet' >
+  <![endif]-->
+
+  <link href='/lri-mapping/style.css' rel='stylesheet' />
+  <link href='http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css' rel='stylesheet' />
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:200,400,600,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/lri-mapping/print.css" type="text/css" media="print" />
+  
+  <script src='http://code.jquery.com/jquery-1.9.1.js'></script>
+  <script src='http://code.jquery.com/ui/1.10.3/jquery-ui.js'></script>
+  <script src='/lri-mapping/ext/share.js'></script>
+  <script src='http://api.tiles.mapbox.com/mapbox.js/v0.6.7/mapbox.js'></script>
+  <script src='/lri-mapping/site.js'></script>
+</head>
+<body>
+  <form id='search'>
+    <input type='text' id='geolocate' placeholder='Explore Places'/>
+</form>
+ <div id='map'></div>
+
+  <div class='menuContainer localScroll'>
+  <ul>
+    <li class='navigation_item'><div class='button'><a class='white ' href='/lri-mapping/progress'><span class='progress'>Our Work</span></a></div></li>
+    <li class='navigation_item'><div class='button'><a class='white ' href='/lri-mapping/proposal'><span class='activities'>Where to Reforest?</span></a></div></li>
+    <li class='navigation_item'><div class='button'><a class='white  active' href='/lri-mapping/vegetation'><span class='veg'>Vegetation Mapping</span></a></div></li>
+    <li class='navigation_item'><div class='button'><a class='white ' href='/lri-mapping/prevention'><span class='activities'>Wildfire Management</span></a></div></li>
+    </ul>
+    <div id="info_tooltip">Describes the nationally distributed sites reforested by LRI starting Fall 2011, the source and type of species planted in each site as well as their survival rates.</div>
+</div>
+<div id='base-select'>
+    <ul class='bottomlayer'> 
+        <li><a class='first' id='lri.map-0jf0f7h2' class='satellite_terrain' href='#'>Terrain</a></li>
+        <li><a class='second active' id='lri.LebanonBorders' class='satellite_terrain' href='#'>Borders</a></li>
+        <li><a class ='last'id='lri.map-ncm30knn' href='#' class='satellite_terrain'>Satellite</a></li>
+    </ul>
+</div>
+<script>
+function printpage()
+  {
+  window.print()
+  }
+</script>
+
+
+
+
+       
+
+     
+
+  
+
+  <div id='swipe'>
+    <div id='handle'>|||</div>
+</div>
+<div class='info'>Drag the bar to compare layers and change opacity.</div>
+
+
+
+  <div class='layer-switcher'>
+    <h4>Change Base Layer</h4>
+    <ul class='basemaps'>
+     <li><a id='lri.FinalVegMap2012' class='layer-name active'>Vegetation Map 2012</a></li>
+     <li><a id='blank' class=''>Blank</a></li>
+   </ul>
+   <h4>Change Swipe layer</h4>
+   <ul class='swipemaps'>
+    <li><a id='lri.VegetationMap88' class='layer-name active'>Vegetation Map 1988</a></li>
+    <li><a id='lri.VegegLeveev' class='layer-name'>Vegetation Levels</a></li>
+  </ul>
+</div>
+
+<img src="/lri-mapping/img/legend.png" id='veg_legend'>
+
+
+
+<script>
+$(function() {
+  
+  window.loadMap({
+    layer: 'lri.FinalVegMap2012',
+    swipe: 'lri.VegetationMap88',
+    lat: 33.756,
+    lon: 35.712,
+    zoom: 9,
+  });
+        // replace "click to navigate" with the site names
+        $('a.forest-site').click(function(e){
+          e.preventDefault();
+          $('a.forest-site').removeClass('active');
+          $(this).addClass('active');
+
+          var dotName = $(this).attr('id');
+          $('.site-name').replaceWith('<span class="site-name">'+ dotName + '</span>')
+        });
+        var info = document.getElementById('info');
+        layers = document.getElementById('layers');
+      });
+</script>
+
+</body>
+</html>

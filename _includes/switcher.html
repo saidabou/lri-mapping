@@ -1,0 +1,55 @@
+<div id='container'>
+  <div class='datalist'>
+    
+    <!-- layers turned on -->
+    <p class='explain'>Click to select/de-select the layer for preview. Drag to change the order. </p>
+    <h4>Current Layers</h4>
+    <div id='onlayers' class='clearfix'>
+      <ul id='sortable'>
+      </ul>
+    </div>
+
+
+    <!-- layers turned off -->
+
+    <h4>Available layers</h4>
+    <div id='offlayers'>
+      <ul id='layerlist'>
+
+        {% for dataset in site.categories.data %}
+
+        <li id='{{dataset.datalayer}}' class='layer-name'>
+          <div class='layer-container'>
+            <a class='layer-link' href='#{{dataset.datalayer}}'>{{dataset.title}}</a>
+            <a class='layer-arrow' href='#'></a>
+          </div>
+          <div class='detail'>
+            <ul>
+              <li class='clearfix'>
+                <div class='detail-name dl'>Download</div>
+                <div class='clearfix'>
+                  {% for download in dataset.downloads %}
+                  <a href='{{download.link}}'>
+                    <span class='download'>{{download.type | capitalize}}</span>
+                  </a>
+                  {% endfor %}
+                </div>
+              </li>
+              <li class='clearfix'>
+                <div class='detail-name'>Description</div><div class='detail-content'>{{dataset.description | markdownify}}</div>
+              </li>
+              <li class='clearfix'>
+                <div class='detail-name'>Updated</div><div class='detail-content'>{{dataset.year}}</div>
+              </li>
+              <li class='clearfix'>
+                <div class='detail-name'>Source</div><div class='detail-bottom'>{{dataset.source | markdownify}}</div>
+              </li>
+            </ul>
+          </div>
+        </li>
+          {% endfor %}
+    
+      </ul>
+    </div>
+  </div>
+</div>

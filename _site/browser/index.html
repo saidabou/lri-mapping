@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>LRI</title>
+  <link href='http://api.tiles.mapbox.com/mapbox.js/v1.1.0/mapbox.css' rel='stylesheet' />
+  <!--[if lte IE 8]>
+    <link href='http://api.tiles.mapbox.com/mapbox.js/v1.1.0/mapbox.ie.css' rel='stylesheet' >
+  <![endif]-->
+
+  <link href='/lri-mapping/style.css' rel='stylesheet' />
+  <link href='http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css' rel='stylesheet' />
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:200,400,600,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/lri-mapping/print.css" type="text/css" media="print" />
+  
+  <script src='http://code.jquery.com/jquery-1.9.1.js'></script>
+  <script src='http://code.jquery.com/ui/1.10.3/jquery-ui.js'></script>
+  <script src='/lri-mapping/ext/share.js'></script>
+  <script src='http://api.tiles.mapbox.com/mapbox.js/v0.6.7/mapbox.js'></script>
+  <script src='/lri-mapping/site.js'></script>
+</head>
+<body>
+  <form id='search'>
+    <input type='text' id='geolocate' placeholder='Explore Places'/>
+</form>
+ <div id='map'></div>
+
+  <div class='menuContainer localScroll'>
+  <ul>
+    <li class='navigation_item'><div class='button'><a class='white ' href='/lri-mapping/progress'><span class='progress'>Our Work</span></a></div></li>
+    <li class='navigation_item'><div class='button'><a class='white ' href='/lri-mapping/proposal'><span class='activities'>Where to Reforest?</span></a></div></li>
+    <li class='navigation_item'><div class='button'><a class='white ' href='/lri-mapping/vegetation'><span class='veg'>Vegetation Mapping</span></a></div></li>
+    <li class='navigation_item'><div class='button'><a class='white ' href='/lri-mapping/prevention'><span class='activities'>Wildfire Management</span></a></div></li>
+    </ul>
+    <div id="info_tooltip">Describes the nationally distributed sites reforested by LRI starting Fall 2011, the source and type of species planted in each site as well as their survival rates.</div>
+</div>
+<div id='base-select'>
+    <ul class='bottomlayer'> 
+        <li><a class='first' id='lri.map-0jf0f7h2' class='satellite_terrain' href='#'>Terrain</a></li>
+        <li><a class='second active' id='lri.LebanonBorders' class='satellite_terrain' href='#'>Borders</a></li>
+        <li><a class ='last'id='lri.map-ncm30knn' href='#' class='satellite_terrain'>Satellite</a></li>
+    </ul>
+</div>
+<script>
+function printpage()
+  {
+  window.print()
+  }
+</script>
+
+
+</div>
+<div id='container'>
+  <div class='datalist'>
+    
+    <!-- layers turned on -->
+    <p class='explain'>Click to select/de-select the layer for preview. Drag to change the order. </p>
+    <h4>Current Layers</h4>
+    <div id='onlayers' class='clearfix'>
+      <ul id='sortable'>
+      </ul>
+    </div>
+
+    <!-- layers turned off -->
+
+    <h4>Available layers</h4>
+    <div id='offlayers'>
+      <ul id='layerlist'>
+
+        
+
+        <li id='jue.fire-risk-red' class='layer-name'>
+          <div class='layer-container'>
+            <a class='layer-link' href='#jue.fire-risk-red'>Wild Fire Risk, 2009</a>
+            <a class='layer-arrow' href='#'></a>
+          </div>
+          <div class='detail'>
+            <ul>
+              <li class='clearfix'>
+                <div class='detail-name dl'>Download</div>
+                <div class='clearfix'>
+                  
+                  <a href='/data/context/csv/nigeria-consumption-2009-2010-st.csv'>
+                    <span class='download'>Shapefile</span>
+                  </a>
+                  
+                </div>
+              </li>
+              <li class='clearfix'>
+                <div class='detail-name'>Description</div><div class='detail-content'><p>This layer depicts the wild fire risk. Here is a blurb of our methodology.</p>
+</div>
+              </li>
+              <li class='clearfix'>
+                <div class='detail-name'>Updated</div><div class='detail-content'>2007</div>
+              </li>
+              <li class='clearfix'>
+                <div class='detail-name'>Source</div><div class='detail-bottom'><p>AFDC</p>
+</div>
+              </li>
+            </ul>
+          </div>
+        </li>
+          
+
+        <li id='jue.Lri-reforest' class='layer-name'>
+          <div class='layer-container'>
+            <a class='layer-link' href='#jue.Lri-reforest'>LRI reforestation sites</a>
+            <a class='layer-arrow' href='#'></a>
+          </div>
+          <div class='detail'>
+            <ul>
+              <li class='clearfix'>
+                <div class='detail-name dl'>Download</div>
+                <div class='clearfix'>
+                  
+                  <a href='/data/context/csv/nigeria-consumption-2009-2010-st.csv'>
+                    <span class='download'>Shapefile</span>
+                  </a>
+                  
+                </div>
+              </li>
+              <li class='clearfix'>
+                <div class='detail-name'>Description</div><div class='detail-content'><p>This layer depicts LRI reforestation sites. Here are the details about the surveys.</p>
+</div>
+              </li>
+              <li class='clearfix'>
+                <div class='detail-name'>Updated</div><div class='detail-content'>2007</div>
+              </li>
+              <li class='clearfix'>
+                <div class='detail-name'>Source</div><div class='detail-bottom'><p>AFDC</p>
+</div>
+              </li>
+            </ul>
+          </div>
+        </li>
+          
+
+        <li id='jue.Lri-reforest' class='layer-name'>
+          <div class='layer-container'>
+            <a class='layer-link' href='#jue.Lri-reforest'>LRI reforestation sites</a>
+            <a class='layer-arrow' href='#'></a>
+          </div>
+          <div class='detail'>
+            <ul>
+              <li class='clearfix'>
+                <div class='detail-name dl'>Download</div>
+                <div class='clearfix'>
+                  
+                  <a href='/data/context/csv/nigeria-consumption-2009-2010-st.csv'>
+                    <span class='download'>Shapefile</span>
+                  </a>
+                  
+                </div>
+              </li>
+              <li class='clearfix'>
+                <div class='detail-name'>Description</div><div class='detail-content'><p>This layer depicts LRI reforestation sites. Here are the details about the surveys.</p>
+</div>
+              </li>
+              <li class='clearfix'>
+                <div class='detail-name'>Updated</div><div class='detail-content'>2007</div>
+              </li>
+              <li class='clearfix'>
+                <div class='detail-name'>Source</div><div class='detail-bottom'><p>AFDC</p>
+</div>
+              </li>
+            </ul>
+          </div>
+        </li>
+          
+
+        <li id='jue.fire-risk-red' class='layer-name'>
+          <div class='layer-container'>
+            <a class='layer-link' href='#jue.fire-risk-red'>Wild Fire Risk, 2009</a>
+            <a class='layer-arrow' href='#'></a>
+          </div>
+          <div class='detail'>
+            <ul>
+              <li class='clearfix'>
+                <div class='detail-name dl'>Download</div>
+                <div class='clearfix'>
+                  
+                  <a href='/data/context/csv/nigeria-consumption-2009-2010-st.csv'>
+                    <span class='download'>Shapefile</span>
+                  </a>
+                  
+                </div>
+              </li>
+              <li class='clearfix'>
+                <div class='detail-name'>Description</div><div class='detail-content'><p>This layer depicts the wild fire risk. Here is a blurb of our methodology.</p>
+</div>
+              </li>
+              <li class='clearfix'>
+                <div class='detail-name'>Updated</div><div class='detail-content'>2007</div>
+              </li>
+              <li class='clearfix'>
+                <div class='detail-name'>Source</div><div class='detail-bottom'><p>AFDC</p>
+</div>
+              </li>
+            </ul>
+          </div>
+        </li>
+          
+    
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var map = mapbox.map('map');
+  map.addLayer(mapbox.layer().id('lri.map-ukm2vdy0,lri.LebanonBorders').composite(true));
+  map.ui.zoomer.add();
+  map.ui.legend.add();
+  mapbox.share().map('map').add();
+
+  // Enable movtips, disable tooltips
+  map.interaction.auto().off('on').off('off').on(wax.movetip().parent(map.parent).events());
+
+  map.centerzoom({
+    lat: 33.9,
+    lon: 36.0
+  }, 9);
+
+
+  var layers = {};
+  var datasets = {};
+  
+    // Create layer, but don't add to map
+    datasets['jue.fire-risk-red'] = {
+      layer: mapbox.layer().id('jue.fire-risk-red'),
+      lat: 34.3,
+      lon: 36.3,
+      zoom: 10
+    };
+  
+    // Create layer, but don't add to map
+    datasets['jue.Lri-reforest'] = {
+      layer: mapbox.layer().id('jue.Lri-reforest'),
+      lat: 33.341,
+      lon: 35.556,
+      zoom: 14
+    };
+  
+    // Create layer, but don't add to map
+    datasets['jue.Lri-reforest'] = {
+      layer: mapbox.layer().id('jue.Lri-reforest'),
+      lat: 33.341,
+      lon: 35.556,
+      zoom: 14
+    };
+  
+    // Create layer, but don't add to map
+    datasets['jue.fire-risk-red'] = {
+      layer: mapbox.layer().id('jue.fire-risk-red'),
+      lat: 34.3,
+      lon: 36.3,
+      zoom: 10
+    };
+  
+
+
+  // Draggable data list
+  $('#sortable').sortable({
+      axis: 'y',
+      containment:'parent',
+      tolerance: 'pointer',
+      update: function(ev, b) {
+        // Move layer
+        var numBaseLayers = 1;
+        var index = $('#sortable').children().index(b.item[0]) + numBaseLayers,
+            id = b.item[0].id;
+        for (var i = 0; i < map.layers.length; i++) {
+            if (id ==  map.layers[i].name) {
+                map.layers.splice(i, 1);
+                break;
+            }
+        }
+        map.insertLayerAt(index, datasets[id].layer);
+      }
+  });
+  $('#sortable').disableSelection();
+
+
+  // Data layerswitcher
+  $('.datalist a.layer-link').click(function (e) {
+      e.preventDefault();
+      if ($(this).hasClass('active')) {
+          // remove layer
+          $(this).removeClass('active');
+          $(this).parent().parent().prependTo('#layerlist');
+          map.removeLayer($(this).attr('href').replace('#', ''))
+      } else {
+          // add layer
+          $(this).addClass('active');
+          $(this).parent().parent().appendTo('#sortable');
+          var dataset = datasets[$(this).attr('href').replace('#', '')];
+          map.addLayer(dataset.layer);
+          map.ease.location(dataset).zoom(dataset.zoom).optimal();
+      }
+      $('#offlayers').css('top',$('#onlayers').height() + 15);
+      map.ui.refresh();
+  });
+
+  // Layer details dropdown
+    $('.datalist a.layer-arrow').click(function (e) {
+        e.preventDefault();
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+            $(this).parent().next().removeClass('active');
+            if ($(this).prev().hasClass('active')) {
+                setTimeout(function() {
+                    $('#offlayers').css('top',curTop);
+                }, 150);
+            }
+        } else {
+            curTop = $('#offlayers').css('top');
+            $('.datalist a.layer-arrow').removeClass('active');
+            $('.datalist .detail').removeClass('active');
+            $(this).addClass('active');
+            $(this).parent().next().addClass('active');
+            if ($(this).prev().hasClass('active')) {
+                setTimeout(function() {
+                    $('#offlayers').css('top',$('#onlayers').height() + 20);
+                }, 150);
+            }
+        }
+    });
+    //baselayer controls and zoom extents
+    $('ul.bottomlayer li a').click(function(e) {
+        e.preventDefault();
+        if (!$(this).hasClass('active')) {
+            map.removeLayerAt(0);
+            map.insertLayerAt(0, mapbox.layer().id(this.id).composite(true));
+            $('ul.bottomlayer li a').removeClass('active');
+            $(this).addClass('active');
+        }
+
+        //This if statement determines the zoom limits based on which base map is shown, since the satellite map is fuzzy when zoomed in too far.
+        if (this.id == 'lri.landsat-lebanon,lri.LebanonBorders') {
+            map.setZoomRange(8, 13);
+        }
+        else {
+            map.setZoomRange(5, 21);
+        }
+    });
+</script>
+
+
+</body>
+</html>

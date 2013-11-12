@@ -1,0 +1,177 @@
+---
+layout: default
+---
+
+{% include navigation.html %}
+
+</div>
+<div id='container'>
+  <div class='datalist'>
+    
+    <!-- layers turned on -->
+    <p class='explain'>Click to select/de-select the layer for preview. Drag to change the order. </p>
+    <h4>Current Layers</h4>
+    <div id='onlayers' class='clearfix'>
+      <ul id='sortable'>
+      </ul>
+    </div>
+
+    <!-- layers turned off -->
+
+    <h4>Available layers</h4>
+    <div id='offlayers'>
+      <ul id='layerlist'>
+
+        {% for dataset in site.categories.data %}
+
+        <li id='{{dataset.datalayer}}' class='layer-name'>
+          <div class='layer-container'>
+            <a class='layer-link' href='#{{dataset.datalayer}}'>{{dataset.title}}</a>
+            <a class='layer-arrow' href='#'></a>
+          </div>
+          <div class='detail'>
+            <ul>
+              <li class='clearfix'>
+                <div class='detail-name dl'>Download</div>
+                <div class='clearfix'>
+                  {% for download in dataset.downloads %}
+                  <a href='{{download.link}}'>
+                    <span class='download'>{{download.type | capitalize}}</span>
+                  </a>
+                  {% endfor %}
+                </div>
+              </li>
+              <li class='clearfix'>
+                <div class='detail-name'>Description</div><div class='detail-content'>{{dataset.description | markdownify}}</div>
+              </li>
+              <li class='clearfix'>
+                <div class='detail-name'>Updated</div><div class='detail-content'>{{dataset.year}}</div>
+              </li>
+              <li class='clearfix'>
+                <div class='detail-name'>Source</div><div class='detail-bottom'>{{dataset.source | markdownify}}</div>
+              </li>
+            </ul>
+          </div>
+        </li>
+          {% endfor %}
+    
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var map = mapbox.map('map');
+  map.addLayer(mapbox.layer().id('lri.map-ukm2vdy0,lri.LebanonBorders').composite(true));
+  map.ui.zoomer.add();
+  map.ui.legend.add();
+  mapbox.share().map('map').add();
+
+  // Enable movtips, disable tooltips
+  map.interaction.auto().off('on').off('off').on(wax.movetip().parent(map.parent).events());
+
+  map.centerzoom({
+    lat: 33.9,
+    lon: 36.0
+  }, 9);
+
+
+  var layers = {};
+  var datasets = {};
+  {% for dataset in site.categories.data %}
+    // Create layer, but don't add to map
+    datasets['{{dataset.datalayer}}'] = {
+      layer: mapbox.layer().id('{{dataset.datalayer}}'),
+      lat: {{dataset.lat}},
+      lon: {{dataset.lon}},
+      zoom: {{dataset.zoom}}
+    };
+  {% endfor%}
+
+
+  // Draggable data list
+  $('#sortable').sortable({
+      axis: 'y',
+      containment:'parent',
+      tolerance: 'pointer',
+      update: function(ev, b) {
+        // Move layer
+        var numBaseLayers = 1;
+        var index = $('#sortable').children().index(b.item[0]) + numBaseLayers,
+            id = b.item[0].id;
+        for (var i = 0; i < map.layers.length; i++) {
+            if (id ==  map.layers[i].name) {
+                map.layers.splice(i, 1);
+                break;
+            }
+        }
+        map.insertLayerAt(index, datasets[id].layer);
+      }
+  });
+  $('#sortable').disableSelection();
+
+
+  // Data layerswitcher
+  $('.datalist a.layer-link').click(function (e) {
+      e.preventDefault();
+      if ($(this).hasClass('active')) {
+          // remove layer
+          $(this).removeClass('active');
+          $(this).parent().parent().prependTo('#layerlist');
+          map.removeLayer($(this).attr('href').replace('#', ''))
+      } else {
+          // add layer
+          $(this).addClass('active');
+          $(this).parent().parent().appendTo('#sortable');
+          var dataset = datasets[$(this).attr('href').replace('#', '')];
+          map.addLayer(dataset.layer);
+          map.ease.location(dataset).zoom(dataset.zoom).optimal();
+      }
+      $('#offlayers').css('top',$('#onlayers').height() + 15);
+      map.ui.refresh();
+  });
+
+  // Layer details dropdown
+    $('.datalist a.layer-arrow').click(function (e) {
+        e.preventDefault();
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+            $(this).parent().next().removeClass('active');
+            if ($(this).prev().hasClass('active')) {
+                setTimeout(function() {
+                    $('#offlayers').css('top',curTop);
+                }, 150);
+            }
+        } else {
+            curTop = $('#offlayers').css('top');
+            $('.datalist a.layer-arrow').removeClass('active');
+            $('.datalist .detail').removeClass('active');
+            $(this).addClass('active');
+            $(this).parent().next().addClass('active');
+            if ($(this).prev().hasClass('active')) {
+                setTimeout(function() {
+                    $('#offlayers').css('top',$('#onlayers').height() + 20);
+                }, 150);
+            }
+        }
+    });
+    //baselayer controls and zoom extents
+    $('ul.bottomlayer li a').click(function(e) {
+        e.preventDefault();
+        if (!$(this).hasClass('active')) {
+            map.removeLayerAt(0);
+            map.insertLayerAt(0, mapbox.layer().id(this.id).composite(true));
+            $('ul.bottomlayer li a').removeClass('active');
+            $(this).addClass('active');
+        }
+
+        //This if statement determines the zoom limits based on which base map is shown, since the satellite map is fuzzy when zoomed in too far.
+        if (this.id == 'lri.landsat-lebanon,lri.LebanonBorders') {
+            map.setZoomRange(8, 13);
+        }
+        else {
+            map.setZoomRange(5, 21);
+        }
+    });
+</script>
+

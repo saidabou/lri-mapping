@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xml:lang="en"><Esri><CreaDate>20120515</CreaDate><CreaTime>17284900</CreaTime><ArcGISFormat>1.0</ArcGISFormat><SyncOnce>TRUE</SyncOnce><DataProperties><lineage><Process ToolSource="C:\Program Files (x86)\ArcGIS\Desktop10.0\ArcToolbox\Toolboxes\Spatial Analyst Tools.tbx\Reclassify" Date="20120515" Time="172849">Reclassify barc256_debbiye.img Value "1 75 1;75 109 2;109 187 3;187 255 4" C:\LRI_JO\BAER\BARC_debbiye\BARC4\recl_BARC DATA</Process></lineage></DataProperties></Esri></metadata>
